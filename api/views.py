@@ -82,3 +82,11 @@ class AktorViewSet(viewsets.ModelViewSet):
     queryset = Aktor.objects.all()
     serializer_class = AktorSerializer
 
+    @action(detail=True, methods=['post'])
+    def dolacz(self, request, **kwargs):
+        aktor = self.get_object()
+        film = Film.objects.get(id=request.data['film'])
+        aktor.filmy.add(film)
+
+        serializer = AktorSerializer(aktor, many=False)
+        return Response(serializer.data)

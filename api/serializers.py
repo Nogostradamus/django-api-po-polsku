@@ -32,15 +32,26 @@ class FilmSerializer(serializers.ModelSerializer):
 class FilmMiniSerializer(serializers.ModelSerializer):
     class Meta:
         model = Film
-        fields = ('id','tytul')
+        fields = ('tytul', 'rok')
 
 
 class AktorSerializer(serializers.ModelSerializer):
-    filmy = FilmMiniSerializer(many=True)
+    filmy = FilmMiniSerializer(many=True, read_only=True)
+
     class Meta:
         model = Aktor
-        fields = ('imie', 'nazwisko', 'filmy')
+        fields = ('id','imie', 'nazwisko', 'filmy')
 
-
-
-
+    # def create(self, validated_data):
+    #     filmy = validated_data["filmy"]
+    #     del validated_data["filmy"]
+    #
+    #     aktor = Aktor.objects.create(**validated_data)
+    #
+    #     for film in filmy:
+    #         f = Film.objects.create(**film)
+    #         aktor.filmy.add(f)
+    #
+    #     aktor.save()
+    #
+    #     return aktor
