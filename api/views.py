@@ -2,6 +2,12 @@ from django.contrib.auth.models import User
 from rest_framework import viewsets, filters
 from rest_framework.response import Response
 from rest_framework.pagination import PageNumberPagination
+from rest_framework.authentication import TokenAuthentication
+from rest_framework.permissions import (
+    IsAuthenticated,
+    IsAuthenticatedOrReadOnly,
+    DjangoModelPermissions
+)
 from django.http.response import HttpResponseNotAllowed
 from rest_framework.decorators import action
 
@@ -26,6 +32,8 @@ class FilmViewSet(viewsets.ModelViewSet):
     ordering_fields = '__all__'
     ordering = ('rok',)
     pagination_class = FilmySetPagination
+    authentication_classes = (TokenAuthentication, )
+    permission_classes = (DjangoModelPermissions,)
 
     def get_queryset(self):
         # rok = self.request.query_params.get('rok', None)
